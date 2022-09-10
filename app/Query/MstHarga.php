@@ -28,21 +28,7 @@ class MstHarga {
     public static function getAll($request)
     {
         try {
-            if($request->dropdown == Constants::IS_ACTIVE) $request->limit = Model::count();
-            $data = Model::where(function ($query) use ($request){
-                if($request->nama) $query->where('kapasitas','ilike',"%$request->nama%");
-            })->paginate($request->limit);
-                return [
-                    'items' => $data->getCollection()->transform(function ($item){
-                        return $item;
-                    }),
-                    'attributes' => [
-                        'total' => $data->total(),
-                        'current_page' => $data->currentPage(),
-                        'from' => $data->currentPage(),
-                        'per_page' => (int) $data->perPage(),
-                    ]
-                ];
+            return ['items' => Model::where('location_id',$request->current_user->location_id)->first()];
         } catch (\Throwable $th) {
             throw $th;
         }
