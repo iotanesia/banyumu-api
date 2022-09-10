@@ -18,6 +18,10 @@ class User {
         if (count($required_params)) throw new \Exception("Parameter berikut harus diisi: " . implode(", ", $required_params));
 
         $user = Model::where('username',$params->username)->first();
+        if($params->fcm_id) {
+            $user->fcm_token = $params->fcm_id;
+            $user->save();
+        }
         if(!$user) throw new \Exception("Pengguna belum terdaftar.");
         if (!Hash::check($params->password, $user->password)) throw new \Exception("Email atau password salah.");
         $user->access_token = Helper::createJwt($user);
