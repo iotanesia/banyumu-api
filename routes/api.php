@@ -1,7 +1,8 @@
 <?php
 
 use App\Http\Controllers\Api\AuthControler;
-use App\Http\Controllers\Api\Bri\BriController;
+use App\Http\Controllers\Api\CustomerTransactionController;
+use App\Http\Controllers\Api\MstHargaController;
 use App\Http\Controllers\Api\Mandiri\MandiriController;
 use App\Http\Controllers\Api\RSAController;
 use App\Http\Controllers\Api\UserControler;
@@ -30,23 +31,16 @@ Route::prefix('v1')
 ->middleware('write.log')
 ->group(function () {
 
-    Route::post('rsa-file',[RSAController::class,'upload']);
-    Route::post('rsa-file-mandiri',[RSAController::class,'uploadMandiri']);
+    Route::post('login',[AuthControler::class,'login']);
 
-    Route::get('/test',function (Request $request){
-       return "service up";
-    });
-
-    //bri
-    Route::prefix('bri')
-    ->namespace('Bri')
-    ->group(function ()
-    {
-        Route::post('/signature-auth',[BriController::class,'signatureAuth']);
-        Route::post('/account-inquiry-internal',[BriController::class,'accountInquiryInternal']);
-        Route::post('/account-inquiry-status',[BriController::class,'accountInquiryStatus']);
-        Route::post('/transfer-intrabank',[BriController::class,'transferIntrabank']);
-
+    Route::group(['middleware' => 'access'],function () {
+        Route::prefix('transaksi')->group(function () {
+            Route::get('/',[CustomerTransactionController::class,'index']);
+            Route::post('/proses',[CustomerTransactionController::class,'proses']);
+        });
+        Route::prefix('master')->group(function () {
+            Route::get('/harga',[MstHargaController::class,'index']);
+        });
     });
 
     //mandiri

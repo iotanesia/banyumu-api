@@ -26,7 +26,6 @@ class ApiHelper {
 
         return $result;
     }
-
     static function resultResponse($data,$statusCode = 200,$eksternalId = null){
         $headers = [
             'Access-Control-Allow-Origin'      => '*',
@@ -36,7 +35,13 @@ class ApiHelper {
             'Access-Control-Allow-Headers'     => 'X-TIMESTAMP,X-CLIENT-KEY,X-CLIENT-SECRET,Content-Type,X-SIGNATURE,Accept,Authorization,Authorization-Customer,ORIGIN,X-PARTNER-ID,X-EXTERNAL-ID,X-IP-ADDRESS,X-DEVICE-ID,CHANNEL-ID,X-LATITUDE,X-LONGITUDE',
             'originalExternalId' => self::setEksternalId()
         ];
-        return response()->json($data, $statusCode,$headers);
+        $response = [
+            "responseCode" => $statusCode,
+            "responseMessage" => 'success',
+            "responseAttr" => $data['attributes'] ?? null,
+            "responseData" => $data['items'] ?? null,
+        ];
+        return response()->json($response, $statusCode,$headers);
     }
 
      static function setEksternalId()
@@ -53,12 +58,13 @@ class ApiHelper {
             'Access-Control-Allow-Headers'     => 'X-TIMESTAMP,X-CLIENT-KEY,X-CLIENT-SECRET,Content-Type,X-SIGNATURE,Accept,Authorization,Authorization-Customer,ORIGIN,X-PARTNER-ID,X-EXTERNAL-ID,X-IP-ADDRESS,X-DEVICE-ID,CHANNEL-ID,X-LATITUDE,X-LONGITUDE'
 
         ];
+        // dd($data,$statusCode);
         $codeSt = $statusCode == 0 ? 500 : $statusCode;
         $code = 500;
         return response()->json([
-            "responseCode" => $code ?? $codeSt,
+            "responseCode" => $codeSt,
             "responseMessage" => $data
-        ],$codeSt,$headers);
+        ],$code,$headers);
     }
 
     static function setErrorResponse($th){
@@ -157,8 +163,7 @@ class ApiHelper {
         ];
 
         JWT::$leeway = 60; // $leeway dalam detik
-        // dd(env('JWT_SECRET'));
-        return JWT::encode($payload, 'LINK_AJA','HS256');
+        return JWT::encode($payload, env('JWT_SECRET'),'HS256');
     }
 
     static function createJwtSignature($data = NULL, $is_refresh_token = FALSE) {
@@ -173,7 +178,7 @@ class ApiHelper {
             ],
             'clientid' => null,
             'iat' => $issued_at, // Time when JWT was issued.
-            'exp' => $issued_at + 60
+            'exp' => $issued_at * 9999999999999999999999
         ];
 
         JWT::$leeway = 60; // $leeway dalam detik
