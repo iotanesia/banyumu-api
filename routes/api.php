@@ -32,9 +32,10 @@ Route::prefix('v1')
 ->group(function () {
 
     Route::post('login',[AuthControler::class,'login']);
-    Route::post('test-notif',[AuthControler::class,'notification']);
-
+    
     Route::group(['middleware' => 'access'],function () {
+        Route::post('update-fcm-token',[AuthControler::class,'updateFcmToken']);
+        Route::post('test-notif',[AuthControler::class,'notification']);
         Route::prefix('transaksi')->group(function () {
             Route::get('/',[CustomerTransactionController::class,'index']);
             Route::post('/proses',[CustomerTransactionController::class,'proses']);
