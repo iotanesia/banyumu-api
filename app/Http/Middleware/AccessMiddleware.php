@@ -31,9 +31,11 @@ class AccessMiddleware
                         $credentials = Helper::decodeJwt($token);
                     }
                 } catch(ExpiredException $e) {
-                    throw new CustomException("Expired Access Token.", 401);
+                    throw new CustomException("Expired Access Token.", 500);
+                    // throw $e;
                 } catch(\Throwable $e) {
-                    throw new CustomException("Invalid Access Token.", 401);
+                    throw new CustomException("Invalid Access Token.", 500);
+                    // throw $e;
                 } catch (\Throwable $th) {
                     throw $th;
                 }

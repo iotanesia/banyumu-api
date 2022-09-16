@@ -4,6 +4,7 @@ namespace App\Query;
 use App\Models\CustomerTransaction as Model;
 use App\ApiHelper as Helper;
 use App\Constants\Constants;
+use App\Notif;
 use Illuminate\Support\Facades\DB;
 
 class CustomerTransaction {
@@ -19,7 +20,7 @@ class CustomerTransaction {
                     $query->where('user_id',$request->current_user->id);
                 }
                 if($request->nama) $query->where('kapasitas','ilike',"%$request->nama%");
-            })->paginate($request->limit);
+            })->orderBy('created_at','desc')->paginate($request->limit);
                 return [
                     'items' => $data->getCollection()->transform(function ($item){
                         return $item;
@@ -47,6 +48,28 @@ class CustomerTransaction {
             $insert = Model::create($data);
             DB::commit();
             return ['items' => $insert];
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            throw $th;
+        }
+    }
+
+    public static function adminPaymentProcess($param,$id)
+    {
+        DB::beginTransaction();
+        try {
+            $data = $param->all();
+            $data['user_id'] = $param->current_user->id;
+            $data['tahap'] = Constants::THP_PEMBAYARAN;
+            $data['status'] = Constants::STS_PEMBAYARAN;
+            $update = Model::find($id);
+            $update->fill($data);
+            $update->save();
+            DB::commit();
+            $notif['title'] = 'Pembayaran Berhasil';
+            $notif['Body'] = 'Pembayaran Berhasil';
+            Notif::sendNotif($param,$notif);
+            return ['items' => $update];
         } catch (\Throwable $th) {
             DB::rollBack();
             throw $th;

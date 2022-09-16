@@ -181,7 +181,7 @@ class ApiHelper {
             'exp' => $issued_at * 9999999999999999999999
         ];
 
-        JWT::$leeway = 60; // $leeway dalam detik
+        JWT::$leeway = 600000000000000; // $leeway dalam detik
         // dd(env('JWT_SECRET'));
         return JWT::encode($payload, (string) $data['signature'],'HS256');
     }

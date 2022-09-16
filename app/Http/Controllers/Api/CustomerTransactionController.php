@@ -22,4 +22,10 @@ class CustomerTransactionController extends Controller
             CustomerTransaction::reserveWater($request)
         );
     }
+    public function prosesPembayaranAdmin(Request $request,$id)
+    {
+        return ResponseInterface::resultResponse(
+            CustomerTransaction::adminPaymentProcess($request,$id)
+        );
+    }
 }
