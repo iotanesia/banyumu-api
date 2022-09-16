@@ -9,9 +9,9 @@ use App\ApiHelper as ResponseInterface;
 class Notif {
     public static function sendNotif($request,$data) {
         try{
+            
             $fcmTokens = User::whereNotNull('fcm_token')->where('id',$request->current_user->mesin_id)->pluck('fcm_token')->toArray();
-
-            return Larafirebase::withTitle($data['title'].$request->current_user->username)
+            $datas = Larafirebase::withTitle($data['title'])
             ->withBody($data['body'])
             ->withSound('default')
             ->withPriority('high')
@@ -27,7 +27,6 @@ class Notif {
             // Or
             // return Larafirebase::fromArray(['title' => 'Test Title '.$request->current_user->username, 'body' => 'Test body'])->sendNotification($fcmTokens);
         
-            
         }catch(\Exception $e){
             report($e);
             return ResponseInterface::createResponse(400,'Something goes wrong while sending notification.',false);

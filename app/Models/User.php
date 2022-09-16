@@ -42,4 +42,8 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function refMesin(){
+        return $this->belongsTo(User::class,'id_mesin','id');
+    }
 }

@@ -67,7 +67,7 @@ class CustomerTransaction {
             $update->save();
             DB::commit();
             $notif['title'] = 'Pembayaran Berhasil';
-            $notif['Body'] = 'Pembayaran Berhasil';
+            $notif['body'] = 'Pembayaran Berhasil '.$param->current_user->username;
             Notif::sendNotif($param,$notif);
             return ['items' => $update];
         } catch (\Throwable $th) {
