@@ -10,5 +10,8 @@ class Constants
     //transaksi
     const THP_PEMESANAN = 1;
     const STS_PEMESANAN = 'Pesan';
+    //group
+    const MESIN = 1;
+    const ADMIN = 2;
 }
 

@@ -12,7 +12,12 @@ class CustomerTransaction {
         try {
             if($request->dropdown == Constants::IS_ACTIVE) $request->limit = Model::count();
             $data = Model::where(function ($query) use ($request){
-                $query->where('user_id',$request->current_user->id);
+                if($request->current_user->is_group == Constants::ADMIN) {
+                    $query->where('user_id',$request->current_user->mesin_id);
+
+                } else {
+                    $query->where('user_id',$request->current_user->id);
+                }
                 if($request->nama) $query->where('kapasitas','ilike',"%$request->nama%");
             })->paginate($request->limit);
                 return [

@@ -8,6 +8,7 @@ use App\ApiHelper as Helper;
 use App\Query\User;
 use Firebase\JWT\ExpiredException;
 use Illuminate\Support\Str;
+use App\Exceptions\CustomException;
 class AccessMiddleware
 {
     /**
@@ -30,9 +31,9 @@ class AccessMiddleware
                         $credentials = Helper::decodeJwt($token);
                     }
                 } catch(ExpiredException $e) {
-                    throw new \Exception("Expired Access Token.", 401);
+                    throw new CustomException("Expired Access Token.", 401);
                 } catch(\Throwable $e) {
-                    throw new \Exception("Invalid Access Token.", 401);
+                    throw new CustomException("Invalid Access Token.", 401);
                 } catch (\Throwable $th) {
                     throw $th;
                 }

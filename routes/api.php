@@ -44,18 +44,5 @@ Route::prefix('v1')
             Route::get('/harga',[MstHargaController::class,'index']);
         });
     });
-
-    //mandiri
-    Route::prefix('mandiri')
-    ->namespace('Mandiri')
-    ->group(function ()
-    {
-        Route::post('/signature-auth',[MandiriController::class,'signatureAuth']);
-        Route::post('/account-inquiry-internal',[MandiriController::class,'accountInquiryInternal']);
-        Route::post('/transfer-status',[MandiriController::class,'accountInquiryStatus']);
-        Route::post('/transfer-intrabank',[MandiriController::class,'transferIntrabank']);
-    });
-
-
 });
 
