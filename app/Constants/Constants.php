@@ -9,7 +9,8 @@ class Constants
     const IS_NOL = 0;
     //transaksi
     const THP_PEMESANAN = 1;
-    const STS_PEMESANAN = 'Pesan';
+    const STS_PEMESANAN = 'Pemesanan Baru';
+    const STS_PEMESANAN_FB = 'pemesanan_baru';
     const THP_PEMBAYARAN = 2;
     const STS_PEMBAYARAN = 'Pembayaran Berhasil';
     const STS_PEMBAYARAN_FB = 'pembayaran_berhasil';
