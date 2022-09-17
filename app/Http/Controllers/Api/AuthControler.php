@@ -54,7 +54,7 @@ class AuthControler extends Controller
             // return ResponseInterface::createResponse(200,'Notification Sent Successfully!!',true);
 
             return Larafirebase::withTitle('Test Title '.$request->current_user->username)
-            ->withBody('Test body')
+            ->withBody('Test Notif success')
             // ->withImage('https://firebase.google.com/images/social.png')
             ->withIcon('https://seeklogo.com/images/F/firebase-logo-402F407EE0-seeklogo.com.png')
             ->withSound('default')
