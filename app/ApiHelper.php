@@ -157,9 +157,10 @@ class ApiHelper {
             'iss' => "sicana-2022", // Issuer of the token
             'sub' => $data, // Subject of the token
             'iat' => $issued_at, // Time when JWT was issued.
-            'exp' => $is_refresh_token
-                ?($issued_at + 60*60*24*30) // Waktu kadaluarsa 30 hari
-                :($issued_at + 60*60*4) // Waktu kadaluarsa 1 jam
+            'exp' => $issued_at + 60*60*9999999999999999999999999999999999999
+            // 'exp' => $is_refresh_token
+            //     ?($issued_at + 60*60*24*30) // Waktu kadaluarsa 30 hari
+            //     :($issued_at + 60*60*4) // Waktu kadaluarsa 1 jam
         ];
 
         JWT::$leeway = 60; // $leeway dalam detik
