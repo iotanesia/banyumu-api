@@ -90,7 +90,7 @@ class CustomerTransaction {
             DB::commit();
             $notif['title'] = 'Pembayaran Berhasil';
             $notif['body'] = 'Pembayaran Berhasil '.$param->current_user->username;
-            Notif::sendNotif($param,$notif);
+            Notif::sendNotif($param,$notif,['status' => Constants::STS_PEMBAYARAN]);
             return ['items' => $update];
         } catch (\Throwable $th) {
             DB::rollBack();

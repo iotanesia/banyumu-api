@@ -7,7 +7,7 @@ use Kutia\Larafirebase\Facades\Larafirebase;
 use App\ApiHelper as ResponseInterface;
 
 class Notif {
-    public static function sendNotif($request,$data) {
+    public static function sendNotif($request,$data,$dataSend = null) {
         try{
             
             $fcmTokens = User::whereNotNull('fcm_token')->where('id',$request->current_user->mesin_id)->pluck('fcm_token')->toArray();
@@ -16,8 +16,7 @@ class Notif {
             ->withSound('default')
             ->withPriority('high')
             ->withAdditionalData([
-                'color' => '#rrggbb',
-                'badge' => 0,
+                $dataSend
             ])
                 // ->withImage('https://firebase.google.com/images/social.png')
                 // ->withIcon('https://seeklogo.com/images/F/firebase-logo-402F407EE0-seeklogo.com.png')
