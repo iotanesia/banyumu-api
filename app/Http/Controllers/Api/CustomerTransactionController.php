@@ -16,6 +16,12 @@ class CustomerTransactionController extends Controller
             CustomerTransaction::getAll($request)
         );
     }
+    public function detail(Request $request,$id)
+    {
+        return ResponseInterface::resultResponse(
+            CustomerTransaction::detail($id)
+        );
+    }
     public function proses(Request $request)
     {
         return ResponseInterface::resultResponse(
@@ -26,6 +32,12 @@ class CustomerTransactionController extends Controller
     {
         return ResponseInterface::resultResponse(
             CustomerTransaction::adminPaymentProcess($request,$id)
+        );
+    }
+    public function prosesPengisianAir(Request $request,$id)
+    {
+        return ResponseInterface::resultResponse(
+            CustomerTransaction::waterFilling($request,$id)
         );
     }
 }

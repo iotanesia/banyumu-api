@@ -38,8 +38,10 @@ Route::prefix('v1')
         Route::post('test-notif',[AuthControler::class,'notification']);
         Route::prefix('transaksi')->group(function () {
             Route::get('/',[CustomerTransactionController::class,'index']);
+            Route::get('/{id}',[CustomerTransactionController::class,'detail']);
             Route::post('/proses',[CustomerTransactionController::class,'proses']);
             Route::post('/update-pembayaran-admin/{id}',[CustomerTransactionController::class,'prosesPembayaranAdmin']);
+            Route::post('/update-pengisian-air/{id}',[CustomerTransactionController::class,'prosesPengisianAir']);
         });
         Route::prefix('master')->group(function () {
             Route::get('/harga',[MstHargaController::class,'index']);
