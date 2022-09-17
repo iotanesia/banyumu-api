@@ -120,4 +120,27 @@ class CustomerTransaction {
             throw $th;
         }
     }
+
+    public static function reloadWater($param,$id)
+    {
+        DB::beginTransaction();
+        try {
+            $data = $param->all();
+            $data['action_by'] = $param->current_user->id;
+            $data['tahap'] = Constants::THP_PROSES;
+            $data['status'] = Constants::STS_PROSES;
+            $update = Model::find($id);
+            $update->fill($data);
+            $update->save();
+            Log::create(self::setParamLog($data,$update));
+            DB::commit();
+            $notif['title'] = 'Proses Pengisian Air';
+            $notif['body'] = 'Proses Pengisian Air '.$param->current_user->username;
+            Notif::sendNotif($param,$notif,['status' => Constants::STS_PROSES_FB]);
+            return ['items' => $update];
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            throw $th;
+        }
+    }
 }

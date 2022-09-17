@@ -40,4 +40,10 @@ class CustomerTransactionController extends Controller
             CustomerTransaction::waterFilling($request,$id)
         );
     }
+    public function prosesPengisianUlang(Request $request,$id)
+    {
+        return ResponseInterface::resultResponse(
+            CustomerTransaction::reloadWater($request,$id)
+        );
+    }
 }

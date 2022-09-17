@@ -42,6 +42,7 @@ Route::prefix('v1')
             Route::post('/proses',[CustomerTransactionController::class,'proses']);
             Route::post('/update-pembayaran-admin/{id}',[CustomerTransactionController::class,'prosesPembayaranAdmin']);
             Route::post('/update-pengisian-air/{id}',[CustomerTransactionController::class,'prosesPengisianAir']);
+            Route::post('/update-pengisian-air/{id}',[CustomerTransactionController::class,'prosesPengisianAir']);
         });
         Route::prefix('master')->group(function () {
             Route::get('/harga',[MstHargaController::class,'index']);
