@@ -9,15 +9,12 @@ use App\ApiHelper as ResponseInterface;
 class Notif {
     public static function sendNotif($request,$data,$dataSend = null) {
         try{
-            
             $fcmTokens = User::whereNotNull('fcm_token')->where('id',$request->current_user->mesin_id)->pluck('fcm_token')->toArray();
             $datas = Larafirebase::withTitle($data['title'])
             ->withBody($data['body'])
             ->withSound('default')
             ->withPriority('high')
-            ->withAdditionalData([
-                $dataSend
-            ])
+            ->withAdditionalData($dataSend)
                 // ->withImage('https://firebase.google.com/images/social.png')
                 // ->withIcon('https://seeklogo.com/images/F/firebase-logo-402F407EE0-seeklogo.com.png')
                 // ->withClickAction('https://www.google.com')

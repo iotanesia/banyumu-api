@@ -90,7 +90,7 @@ class CustomerTransaction {
             DB::commit();
             $notif['title'] = 'Pembayaran Berhasil';
             $notif['body'] = 'Pembayaran Berhasil '.$param->current_user->username;
-            Notif::sendNotif($param,$notif,['status' => Constants::STS_PEMBAYARAN]);
+            Notif::sendNotif($param,$notif,['status' => Constants::STS_PEMBAYARAN_FB]);
             return ['items' => $update];
         } catch (\Throwable $th) {
             DB::rollBack();
@@ -113,7 +113,7 @@ class CustomerTransaction {
             DB::commit();
             $notif['title'] = 'Pengisian Air Selesai';
             $notif['body'] = 'Pengisian Air Selesai '.$param->current_user->username;
-            Notif::sendNotif($param,$notif);
+            Notif::sendNotif($param,$notif,['status' => Constants::STS_SELESAI_FB]);
             return ['items' => $update];
         } catch (\Throwable $th) {
             DB::rollBack();
