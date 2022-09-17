@@ -17,7 +17,7 @@ class Constants
     const STS_PROSES = 'Proses pengisian';
     const THP_SELESAI = 4;
     const STS_SELESAI = 'Pengisian selesai';
-    const STS_SELESAI_FB = 'pembayaran_berhasil';
+    const STS_SELESAI_FB = 'pengisian_selesai';
     //group
     const MESIN = 1;
     const ADMIN = 2;
