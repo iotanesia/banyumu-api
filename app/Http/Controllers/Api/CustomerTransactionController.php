@@ -52,4 +52,16 @@ class CustomerTransactionController extends Controller
             CustomerTransaction::waterFillingFinished($request)
         );
     }
+    public function prosesPembatalanTransaksi(Request $request,$id)
+    {
+        return ResponseInterface::resultResponse(
+            CustomerTransaction::cancelTransaksi($request,$id)
+        );
+    }
+    public function imgQr(Request $request)
+    {
+        return ResponseInterface::resultResponse(
+            ['items' => ['img_qr'=>'BCA000201010211500201511027301632515204000053033605802ID5908WAN ADLI6003BCA62380216bXVufonIBXCLZPne991400303617092022630497d9']]
+        );
+    }
 }

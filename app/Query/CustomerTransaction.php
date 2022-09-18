@@ -173,4 +173,24 @@ class CustomerTransaction {
             throw $th;
         }
     }
+
+    public static function cancelTransaksi($param,$id)
+    {
+        DB::beginTransaction();
+        try {
+            $data = $param->all();
+            $data['action_by'] = $param->current_user->id;
+            $data['tahap'] = Constants::THP_BATAL;
+            $data['status'] = Constants::STS_BATAL;
+            $update = Model::find($id);
+            $update->fill($data);
+            $update->save();
+            Log::create(self::setParamLog($data,$update));
+            DB::commit();
+            return ['items' => $update];
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            throw $th;
+        }
+    }
 }
