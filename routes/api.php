@@ -32,7 +32,7 @@ Route::prefix('v1')
 ->group(function () {
 
     Route::post('login',[AuthControler::class,'login']);
-    Route::post('transaksi/update-pengisian-selesai',[CustomerTransactionController::class,'prosesPengisianSelesai']);
+    Route::get('transaksi/update-pengisian-selesai',[CustomerTransactionController::class,'prosesPengisianSelesai']);
     
     Route::group(['middleware' => 'access'],function () {
         Route::post('update-fcm-token',[AuthControler::class,'updateFcmToken']);
