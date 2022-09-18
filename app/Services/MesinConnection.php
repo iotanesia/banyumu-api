@@ -29,7 +29,7 @@ class MesinConnection {
             ->withoutVerifying()
             ->contentType("application/json")
             ->get('https://api.thingspeak.com/update?api_key=Q4QD7S1ARAHYELT8&amp;amp;field1='.$debit);
-            Log::info($response,'https://api.thingspeak.com/update?api_key=Q4QD7S1ARAHYELT8&amp;amp;field1='.$debit);
+            Log::info($response);
             if($response == '0') {
                 self::turnOn('Q4QD7S1ARAHYELT8');
             } else {

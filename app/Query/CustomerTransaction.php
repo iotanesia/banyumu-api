@@ -139,7 +139,6 @@ class CustomerTransaction {
             if(!$update) return 0;
             $update->fill($data);
             $update->save();
-            dd($update);
             Log::create(self::setParamLog($data,$update));
             DB::commit();
             $notif['title'] = 'Pengisian Air Selesai';
