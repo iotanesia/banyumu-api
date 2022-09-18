@@ -30,7 +30,7 @@ class Notif {
     }
     public static function sendNotifSementara($request,$data,$dataSend = null) {
         try{
-            $fcmTokens = User::whereNotNull('fcm_token')->where('id',4)->pluck('fcm_token')->toArray();
+            $fcmTokens = User::whereNotNull('fcm_token')->where('id',3)->pluck('fcm_token')->toArray();
             return Larafirebase::withTitle($data['title'])
                    ->withBody($data['body'])
                    ->withSound('default')
