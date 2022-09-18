@@ -136,8 +136,10 @@ class CustomerTransaction {
             $data['tahap'] = Constants::THP_SELESAI;
             $data['status'] = Constants::STS_SELESAI;
             $update = Model::where('user_id',3)->orderBy('id','desc')->where('status','Pembayaran Berhasil')->first();
+            if(!$update) return 0;
             $update->fill($data);
             $update->save();
+            dd($update);
             Log::create(self::setParamLog($data,$update));
             DB::commit();
             $notif['title'] = 'Pengisian Air Selesai';
