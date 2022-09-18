@@ -94,8 +94,8 @@ class CustomerTransaction {
             Notif::sendNotif($param,$notif,['status' => Constants::STS_PEMBAYARAN_FB]);
             $mesin = User::whereNotNull('api_key')->find($param->current_user->mesin_id);
             // if(!$mesin) throw new \Exception('Api Key belum terdaftar', 500);
-            MesinConnection::turnOn($mesin->api_key);
             MesinConnection::updateDebit($update->kapasitas);
+            MesinConnection::turnOn($mesin->api_key);
             DB::commit();
             return ['items' => $update];
         } catch (\Throwable $th) {
