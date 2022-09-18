@@ -32,6 +32,7 @@ Route::prefix('v1')
 ->group(function () {
 
     Route::post('login',[AuthControler::class,'login']);
+    Route::post('transaksi/update-pengisian-selesai',[CustomerTransactionController::class,'prosesPengisianSelesai']);
     
     Route::group(['middleware' => 'access'],function () {
         Route::post('update-fcm-token',[AuthControler::class,'updateFcmToken']);
@@ -42,7 +43,7 @@ Route::prefix('v1')
             Route::post('/proses',[CustomerTransactionController::class,'proses']);
             Route::post('/update-pembayaran-admin/{id}',[CustomerTransactionController::class,'prosesPembayaranAdmin']);
             Route::post('/update-pengisian-air/{id}',[CustomerTransactionController::class,'prosesPengisianAir']);
-            Route::post('/update-pengisian-air/{id}',[CustomerTransactionController::class,'prosesPengisianAir']);
+            Route::post('/update-pengisian-ulang/{id}',[CustomerTransactionController::class,'prosesPengisianUlang']);
         });
         Route::prefix('master')->group(function () {
             Route::get('/harga',[MstHargaController::class,'index']);

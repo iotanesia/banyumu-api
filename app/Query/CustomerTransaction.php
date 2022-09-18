@@ -5,7 +5,9 @@ use App\Models\CustomerTransaction as Model;
 use App\Models\CustomerTransactionLog as Log;
 use App\ApiHelper as Helper;
 use App\Constants\Constants;
+use App\Models\User;
 use App\Notif;
+use App\Services\MesinConnection;
 use Illuminate\Support\Facades\DB;
 
 class CustomerTransaction {
@@ -87,10 +89,14 @@ class CustomerTransaction {
             $update->fill($data);
             $update->save();
             Log::create(self::setParamLog($data,$update));
-            DB::commit();
             $notif['title'] = 'Pembayaran Berhasil';
             $notif['body'] = 'Pembayaran Berhasil '.$param->current_user->username;
             Notif::sendNotif($param,$notif,['status' => Constants::STS_PEMBAYARAN_FB]);
+            $mesin = User::whereNotNull('api_key')->find($param->current_user->mesin_id);
+            // if(!$mesin) throw new \Exception('Api Key belum terdaftar', 500);
+            MesinConnection::turnOn($mesin->api_key);
+            MesinConnection::updateDebit($update->kapasitas);
+            DB::commit();
             return ['items' => $update];
         } catch (\Throwable $th) {
             DB::rollBack();
@@ -114,6 +120,29 @@ class CustomerTransaction {
             $notif['title'] = 'Pengisian Air Selesai';
             $notif['body'] = 'Pengisian Air Selesai '.$param->current_user->username;
             Notif::sendNotif($param,$notif,['status' => Constants::STS_SELESAI_FB]);
+            return ['items' => $update];
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            throw $th;
+        }
+    }
+
+    public static function waterFillingFinished($param)
+    {
+        DB::beginTransaction();
+        try {
+            $data = $param->all();
+            $data['action_by'] = 3;
+            $data['tahap'] = Constants::THP_SELESAI;
+            $data['status'] = Constants::STS_SELESAI;
+            $update = Model::where('user_id',3)->orderBy('id','desc')->where('status','Pembayaran Berhasil')->first();
+            $update->fill($data);
+            $update->save();
+            Log::create(self::setParamLog($data,$update));
+            DB::commit();
+            $notif['title'] = 'Pengisian Air Selesai';
+            $notif['body'] = 'Pengisian Air Selesai '.'sariater001';
+            Notif::sendNotifSementara($param,$notif,['status' => Constants::STS_SELESAI_FB]);
             return ['items' => $update];
         } catch (\Throwable $th) {
             DB::rollBack();

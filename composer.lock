@@ -4,8 +4,48 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b3fb6b2c3dfd7bcf338364e0192ce490",
+    "content-hash": "1aaf5204d648a9540562522f48a33eb7",
     "packages": [
+        {
+            "name": "berkas1/thingspeak_php",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/berkas1/thingspeak_php.git",
+                "reference": "5ec62da2378bb1219f66c40704356f9d2e4c2898"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/berkas1/thingspeak_php/zipball/5ec62da2378bb1219f66c40704356f9d2e4c2898",
+                "reference": "5ec62da2378bb1219f66c40704356f9d2e4c2898",
+                "shasum": ""
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^6.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "berkas1\\thingspeak_php\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "berkas1",
+                    "email": "berka@berkasimon.com"
+                }
+            ],
+            "description": "PHP library for communication with thingspeak.com service.",
+            "support": {
+                "issues": "https://github.com/berkas1/thingspeak_php/issues",
+                "source": "https://github.com/berkas1/thingspeak_php/tree/master"
+            },
+            "time": "2017-05-08T18:15:20+00:00"
+        },
         {
             "name": "brick/math",
             "version": "0.10.2",
