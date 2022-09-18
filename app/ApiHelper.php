@@ -44,6 +44,10 @@ class ApiHelper {
         return response()->json($response, $statusCode,$headers);
     }
 
+    static function resultResponseMesin($data,$statusCode = 200,$eksternalId = null){
+        return 0;
+    }
+
      static function setEksternalId()
     {
         return rand(0,999999999);

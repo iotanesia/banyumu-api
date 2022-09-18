@@ -48,7 +48,7 @@ class CustomerTransactionController extends Controller
     }
     public function prosesPengisianSelesai(Request $request)
     {
-        return ResponseInterface::resultResponse(
+        return ResponseInterface::resultResponseMesin(
             CustomerTransaction::waterFillingFinished($request)
         );
     }
