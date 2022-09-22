@@ -18,7 +18,8 @@
         "phpseclib/phpseclib": "^3.0",
         "seffeng/laravel-rsa": "^1.0",
         "spatie/laravel-health": "^1.9",
-        "stevebauman/location": "^6.3"
+        "stevebauman/location": "^6.3",
+        "xendit/xendit-php": "^2.18"
     },
     "require-dev": {
         "facade/ignition": "^2.5",

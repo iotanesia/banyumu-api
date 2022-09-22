@@ -38,5 +38,8 @@ return [
         'host' => env('MANDIRI_HOST','https://mandiri-snap.linkaja.dev:4101'),
         'key' => env('MANDIRI_KEY_PRIVATE_NAME','mandiri'),
     ],
+    'xendit' => [
+        'secret_key' => env('XENDIT_KEY','xnd_production_9EiXubDOx4qDb22GLRf2F3lAKWLhvFQIpCkrSBUwl7VIAA1WPn2CmcE1M6gmtl')
+    ]
 
 ];

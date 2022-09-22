@@ -8,6 +8,7 @@ use App\Constants\Constants;
 use App\Models\User;
 use App\Notif;
 use App\Services\MesinConnection;
+use App\Services\XenditServices;
 use Illuminate\Support\Facades\DB;
 
 class CustomerTransaction {
@@ -61,6 +62,14 @@ class CustomerTransaction {
             $data['tahap'] = Constants::THP_PEMESANAN;
             $data['status'] = Constants::STS_PEMESANAN;
             $insert = Model::create($data);
+
+            $dataSend['external_id'] = 'trx-'.$insert->id;
+            $dataSend['type'] = 'DYNAMIC';
+            $dataSend['callback_url'] = 'https://my-shop.com/callbacks';
+            $dataSend['amount'] = $insert->harga;
+            $insert->qr_data = XenditServices::createQR($dataSend);
+
+            // dd($insert->qr_data);
             Log::create(self::setParamLog($data,$insert));
             DB::commit();
             return ['items' => $insert];
