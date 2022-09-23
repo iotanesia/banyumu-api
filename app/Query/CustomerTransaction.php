@@ -63,7 +63,7 @@ class CustomerTransaction {
             $data['status'] = Constants::STS_PEMESANAN;
             $insert = Model::create($data);
 
-            $dataSend['external_id'] = 'trx-'.$insert->id;
+            $dataSend['external_id'] = $insert->id;
             $dataSend['type'] = 'DYNAMIC';
             $dataSend['callback_url'] = 'https://my-shop.com/callbacks';
             $dataSend['amount'] = $insert->harga;
@@ -117,7 +117,22 @@ class CustomerTransaction {
     {
         DB::beginTransaction();
         try {
-            $data = $param->all();
+            $data['tahap'] = Constants::THP_PEMBAYARAN;
+            $data['status'] = Constants::STS_PEMBAYARAN;
+            $customerTransactionId = $param->data->reference_id;
+            $update = Model::find($customerTransactionId);
+            $update->fill($data);
+            $update->save();
+            Log::create(self::setParamLog($data,$update));
+            $notif['title'] = 'Pembayaran Berhasil';
+            $notif['body'] = 'Pembayaran Berhasil '.$param->current_user->username;
+            Notif::sendNotif($param,$notif,['status' => Constants::STS_PEMBAYARAN_FB]);
+            $mesin = User::whereNotNull('api_key')->find($param->current_user->mesin_id);
+            // if(!$mesin) throw new \Exception('Api Key belum terdaftar', 500);
+            MesinConnection::updateDebit($update->kapasitas);
+            MesinConnection::turnOn($mesin->api_key);
+            DB::commit();
+            return ['items' => $update];
             // $data['action_by'] = $param->current_user->id;
             // $data['tahap'] = Constants::THP_PEMBAYARAN;
             // $data['status'] = Constants::STS_PEMBAYARAN;
@@ -132,7 +147,7 @@ class CustomerTransaction {
             // MesinConnection::updateDebit($update->kapasitas);
             // MesinConnection::turnOn($mesin->api_key);
             // DB::commit();
-            return ['items' => $data];
+            // return ['items' => $data];
         } catch (\Throwable $th) {
             DB::rollBack();
             throw $th;
