@@ -126,7 +126,7 @@ class CustomerTransaction {
             $data['action_by'] = 3;
             $data['tahap'] = Constants::THP_PEMBAYARAN;
             $data['status'] = Constants::STS_PEMBAYARAN;
-            $customerTransactionId = $param->data['reference_id'];
+            $customerTransactionId = $param->qr_code['external_id'];
             $update = Model::find($customerTransactionId);
             $update->fill($data);
             $update->save();
