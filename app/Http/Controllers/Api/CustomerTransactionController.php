@@ -64,4 +64,10 @@ class CustomerTransactionController extends Controller
             ['items' => ['img_qr'=>'BCA000201010211500201511027301632515204000053033605802ID5908WAN ADLI6003BCA62380216bXVufonIBXCLZPne991400303617092022630497d9']]
         );
     }
+    public function callbackApi(Request $request)
+    {
+        return ResponseInterface::resultResponse(
+            CustomerTransaction::callbackApi($request)
+        );
+    }
 }

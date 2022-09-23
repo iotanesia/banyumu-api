@@ -39,7 +39,8 @@ return [
         'key' => env('MANDIRI_KEY_PRIVATE_NAME','mandiri'),
     ],
     'xendit' => [
-        'secret_key' => env('XENDIT_KEY','xnd_production_9EiXubDOx4qDb22GLRf2F3lAKWLhvFQIpCkrSBUwl7VIAA1WPn2CmcE1M6gmtl')
+        'secret_key' => env('XENDIT_KEY','xnd_production_9EiXubDOx4qDb22GLRf2F3lAKWLhvFQIpCkrSBUwl7VIAA1WPn2CmcE1M6gmtl'),
+        'callback_secret_key' => env('CALLBACK_XENDIT_KEY','2f694544b3ebcd2eba1d39b00742e94192ba77da958b24e82092f8c53f5fbc4f')
     ]
 
 ];

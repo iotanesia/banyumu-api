@@ -34,6 +34,7 @@ Route::prefix('v1')
     Route::post('login',[AuthControler::class,'login']);
     Route::get('transaksi/update-pengisian-selesai',[CustomerTransactionController::class,'prosesPengisianSelesai']);
     Route::get('img-qr',[CustomerTransactionController::class,'imgQr']);
+    Route::get('callback-api',[CustomerTransactionController::class,'callbackApi']);
     
     Route::group(['middleware' => 'access'],function () {
         Route::post('update-fcm-token',[AuthControler::class,'updateFcmToken']);
