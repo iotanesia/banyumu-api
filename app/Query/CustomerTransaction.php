@@ -115,6 +115,7 @@ class CustomerTransaction {
 
     public static function callbackApi($param)
     {
+        if($param->header('x-callback-token') != config('services.xendit.callback_secret_key')) throw new \Exception("Invalid Token.");
         DB::beginTransaction();
         try {
             $data['action_by'] = 3;
