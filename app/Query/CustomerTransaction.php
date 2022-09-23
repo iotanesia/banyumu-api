@@ -119,7 +119,7 @@ class CustomerTransaction {
         try {
             $data['tahap'] = Constants::THP_PEMBAYARAN;
             $data['status'] = Constants::STS_PEMBAYARAN;
-            $customerTransactionId = $param->reference_id;
+            $customerTransactionId = $param->data['reference_id'];
             $update = Model::find($customerTransactionId);
             $update->fill($data);
             $update->save();
