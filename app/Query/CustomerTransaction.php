@@ -65,7 +65,7 @@ class CustomerTransaction {
 
             $dataSend['external_id'] = $insert->id;
             $dataSend['type'] = 'DYNAMIC';
-            $dataSend['callback_url'] = 'https://my-shop.com/callbacks';
+            $dataSend['callback_url'] = 'https://deviotanesia.com/api/v1/callback-api';
             $dataSend['amount'] = $insert->harga;
             $insert->qr_data = XenditServices::createQR($dataSend);
 
