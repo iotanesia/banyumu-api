@@ -118,21 +118,21 @@ class CustomerTransaction {
         DB::beginTransaction();
         try {
             $data = $param->all();
-            $data['action_by'] = $param->current_user->id;
-            $data['tahap'] = Constants::THP_PEMBAYARAN;
-            $data['status'] = Constants::STS_PEMBAYARAN;
-            $update = Model::find($param);
-            $update->fill($data);
-            $update->save();
-            Log::create(self::setParamLog($data,$update));
-            $notif['title'] = 'Pembayaran Berhasil';
-            $notif['body'] = 'Pembayaran Berhasil '.$param->current_user->username;
-            Notif::sendNotif($param,$notif,['status' => Constants::STS_PEMBAYARAN_FB]);
-            $mesin = User::whereNotNull('api_key')->find($param->current_user->mesin_id);
-            MesinConnection::updateDebit($update->kapasitas);
-            MesinConnection::turnOn($mesin->api_key);
-            DB::commit();
-            return ['items' => $update];
+            // $data['action_by'] = $param->current_user->id;
+            // $data['tahap'] = Constants::THP_PEMBAYARAN;
+            // $data['status'] = Constants::STS_PEMBAYARAN;
+            // $update = Model::find($param);
+            // $update->fill($data);
+            // $update->save();
+            // Log::create(self::setParamLog($data,$update));
+            // $notif['title'] = 'Pembayaran Berhasil';
+            // $notif['body'] = 'Pembayaran Berhasil '.$param->current_user->username;
+            // Notif::sendNotif($param,$notif,['status' => Constants::STS_PEMBAYARAN_FB]);
+            // $mesin = User::whereNotNull('api_key')->find($param->current_user->mesin_id);
+            // MesinConnection::updateDebit($update->kapasitas);
+            // MesinConnection::turnOn($mesin->api_key);
+            // DB::commit();
+            return ['items' => $data];
         } catch (\Throwable $th) {
             DB::rollBack();
             throw $th;
