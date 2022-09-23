@@ -117,6 +117,7 @@ class CustomerTransaction {
     {
         DB::beginTransaction();
         try {
+            $data['action_by'] = 3;
             $data['tahap'] = Constants::THP_PEMBAYARAN;
             $data['status'] = Constants::STS_PEMBAYARAN;
             $customerTransactionId = $param->data['reference_id'];
@@ -125,9 +126,9 @@ class CustomerTransaction {
             $update->save();
             Log::create(self::setParamLog($data,$update));
             $notif['title'] = 'Pembayaran Berhasil';
-            $notif['body'] = 'Pembayaran Berhasil '.$param->current_user->username;
-            Notif::sendNotif($param,$notif,['status' => Constants::STS_PEMBAYARAN_FB]);
-            $mesin = User::whereNotNull('api_key')->find($param->current_user->mesin_id);
+            $notif['body'] = 'Pembayaran Berhasil';
+            Notif::sendNotifSementara($param,$notif,['status' => Constants::STS_PEMBAYARAN_FB]);
+            $mesin = User::whereNotNull('api_key')->find(3);
             // if(!$mesin) throw new \Exception('Api Key belum terdaftar', 500);
             MesinConnection::updateDebit($update->kapasitas);
             MesinConnection::turnOn($mesin->api_key);
