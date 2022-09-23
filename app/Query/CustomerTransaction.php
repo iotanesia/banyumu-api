@@ -3,6 +3,7 @@
 namespace App\Query;
 use App\Models\CustomerTransaction as Model;
 use App\Models\CustomerTransactionLog as Log;
+use Illuminate\Support\Facades\Log AS LogInfo;
 use App\ApiHelper as Helper;
 use App\Constants\Constants;
 use App\Models\User;
@@ -115,7 +116,11 @@ class CustomerTransaction {
 
     public static function callbackApi($param)
     {
+        LogInfo::info('CALLBACK VIRTUAL ACCOUNT:');
+        LogInfo::info($param);
+        
         if($param->header('x-callback-token') != config('services.xendit.callback_secret_key')) throw new \Exception("Invalid Token.");
+        LogInfo::info('sukses callback');
         DB::beginTransaction();
         try {
             $data['action_by'] = 3;
