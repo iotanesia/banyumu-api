@@ -123,18 +123,18 @@ class CustomerTransaction {
         LogInfo::info('sukses callback');
         DB::beginTransaction();
         try {
-            $data['action_by'] = 3;
-            $data['tahap'] = Constants::THP_PEMBAYARAN;
-            $data['status'] = Constants::STS_PEMBAYARAN;
             $customerTransactionId = $param->qr_code['external_id'];
             $update = Model::find($customerTransactionId);
+            $data['action_by'] = $update->user_id;
+            $data['tahap'] = Constants::THP_PEMBAYARAN;
+            $data['status'] = Constants::STS_PEMBAYARAN;
             $update->fill($data);
             $update->save();
             Log::create(self::setParamLog($data,$update));
             $notif['title'] = 'Pembayaran Berhasil';
             $notif['body'] = 'Pembayaran Berhasil';
-            Notif::sendNotifSementara($param,$notif,['status' => Constants::STS_PEMBAYARAN_FB]);
-            $mesin = User::whereNotNull('api_key')->find(3);
+            Notif::sendNotifCallbacks($update->user_id,$notif,['status' => Constants::STS_PEMBAYARAN_FB]);
+            $mesin = User::whereNotNull('api_key')->find($update->user_id);
             // if(!$mesin) throw new \Exception('Api Key belum terdaftar', 500);
             MesinConnection::updateDebit($update->kapasitas);
             MesinConnection::turnOn($mesin->api_key);
