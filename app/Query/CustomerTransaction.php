@@ -161,6 +161,17 @@ class CustomerTransaction {
         }
     }
 
+    public static function qrTes($param)
+    {
+        LogInfo::info('TES QR:');
+        LogInfo::info($param);
+        $dataSend['external_id'] = 1;
+        $dataSend['type'] = 'DYNAMIC';
+        $dataSend['callback_url'] = 'https://test-qr';
+        $dataSend['amount'] = 1;
+        return XenditServices::createQR($dataSend);
+    }
+
     public static function waterFilling($param,$id)
     {
         DB::beginTransaction();

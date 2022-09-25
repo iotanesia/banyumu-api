@@ -70,4 +70,10 @@ class CustomerTransactionController extends Controller
             CustomerTransaction::callbackApi($request)
         );
     }
+    public function qrTes(Request $request)
+    {
+        return ResponseInterface::resultResponse(
+            CustomerTransaction::qrTes($request)
+        );
+    }
 }
