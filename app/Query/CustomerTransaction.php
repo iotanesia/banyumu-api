@@ -167,7 +167,7 @@ class CustomerTransaction {
         LogInfo::info($param);
         $dataSend['external_id'] = 'tt-001';
         $dataSend['type'] = 'DYNAMIC';
-        $dataSend['callback_url'] = 'https://test-qr';
+        $dataSend['callback_url'] = 'https://test-qr.com';
         $dataSend['amount'] = 1;
         return XenditServices::createQR($dataSend);
     }
