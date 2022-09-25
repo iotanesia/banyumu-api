@@ -165,7 +165,7 @@ class CustomerTransaction {
     {
         LogInfo::info('TES QR:');
         LogInfo::info($param);
-        $dataSend['external_id'] = 1;
+        $dataSend['external_id'] = 'tt-001';
         $dataSend['type'] = 'DYNAMIC';
         $dataSend['callback_url'] = 'https://test-qr';
         $dataSend['amount'] = 1;
