@@ -7,6 +7,7 @@ use App\Query\CustomerTransaction;
 use Illuminate\Http\Request;
 use App\ApiHelper as ResponseInterface;
 use App\Services\User as Service;
+use Illuminate\Support\Facades\Log;
 
 class CustomerTransactionController extends Controller
 {
@@ -24,6 +25,7 @@ class CustomerTransactionController extends Controller
     }
     public function proses(Request $request)
     {
+        Log::info('masuk');
         return ResponseInterface::resultResponse(
             CustomerTransaction::reserveWater($request)
         );
