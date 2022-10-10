@@ -125,7 +125,7 @@ class CustomerTransaction {
         DB::beginTransaction();
         try {
             $customerTransactionId = (int)$param->qr_code['external_id'];
-            $update = Model::find($customerTransactionId);
+            $update = Model::find((int)$customerTransactionId);
             $data['action_by'] = $update->user_id;
             $data['tahap'] = Constants::THP_PEMBAYARAN;
             $data['status'] = Constants::STS_PEMBAYARAN;
