@@ -64,7 +64,7 @@ class CustomerTransaction {
             $data['status'] = Constants::STS_PEMESANAN;
             $insert = Model::create($data);
 
-            $dataSend['external_id'] = $insert->id;
+            $dataSend['external_id'] = '"'.$insert->id.'"';
             $dataSend['type'] = 'DYNAMIC';
             $dataSend['callback_url'] = 'https://deviotanesia.com/api/v1/callback-api';
             $dataSend['amount'] = $insert->harga;
@@ -124,7 +124,7 @@ class CustomerTransaction {
         LogInfo::info('sukses callback');
         DB::beginTransaction();
         try {
-            $customerTransactionId = $param->qr_code['external_id'];
+            $customerTransactionId = (int)$param->qr_code['external_id'];
             $update = Model::find($customerTransactionId);
             $data['action_by'] = $update->user_id;
             $data['tahap'] = Constants::THP_PEMBAYARAN;
