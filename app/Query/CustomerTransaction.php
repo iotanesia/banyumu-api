@@ -64,7 +64,7 @@ class CustomerTransaction {
             $data['status'] = Constants::STS_PEMESANAN;
             $insert = Model::create($data);
 
-            $dataSend['external_id'] = '"'.$insert->id.'"';
+            $dataSend['external_id'] = 'EXT-'.$insert->id;
             $dataSend['type'] = 'DYNAMIC';
             $dataSend['callback_url'] = 'https://deviotanesia.com/api/v1/callback-api';
             $dataSend['amount'] = $insert->harga;
@@ -118,17 +118,19 @@ class CustomerTransaction {
     public static function callbackApi($param)
     {
         LogInfo::info('CALLBACK VIRTUAL ACCOUNT:');
-        LogInfo::info(json_encode($param));
-        LogInfo::info($param->qr_code['external_id']);
-        LogInfo::info((int)$param->qr_code['external_id']);
-        // dd($param->qr_code);
+        LogInfo::info($param);
+        // $ext = 'ext-001';
+        // // dd($ext);
+        // $exclude = explode('-',$ext);
+        // dd((int)$exclude[1]);
         
+
         if($param->header('x-callback-token') != config('services.xendit.callback_secret_key')) throw new \Exception("Invalid Token.");
         LogInfo::info('sukses callback');
         DB::beginTransaction();
         try {
-            $customerTransactionId = (int)$param->qr_code['external_id'];
-            $update = Model::find((int)$customerTransactionId);
+            $customerTransactionId = explode('-',$param->qr_code['external_id']);
+            $update = Model::find((int)$customerTransactionId[1]);
             $data['action_by'] = $update->user_id;
             $data['tahap'] = Constants::THP_PEMBAYARAN;
             $data['status'] = Constants::STS_PEMBAYARAN;
