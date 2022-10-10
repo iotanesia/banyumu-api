@@ -118,7 +118,8 @@ class CustomerTransaction {
     public static function callbackApi($param)
     {
         LogInfo::info('CALLBACK VIRTUAL ACCOUNT:');
-        LogInfo::info($param);
+        LogInfo::info(json_encode($param));
+        // dd($param->qr_code);
         
         if($param->header('x-callback-token') != config('services.xendit.callback_secret_key')) throw new \Exception("Invalid Token.");
         LogInfo::info('sukses callback');
