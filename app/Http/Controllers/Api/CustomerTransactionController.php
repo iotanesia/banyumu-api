@@ -25,7 +25,6 @@ class CustomerTransactionController extends Controller
     }
     public function proses(Request $request)
     {
-        Log::info('masuk');
         return ResponseInterface::resultResponse(
             CustomerTransaction::reserveWater($request)
         );
