@@ -68,12 +68,11 @@ class CustomerTransaction {
             $dataSend['type'] = 'DYNAMIC';
             $dataSend['callback_url'] = 'https://deviotanesia.com/api/v1/callback-api';
             $dataSend['amount'] = $insert->harga;
-            Log::info($dataSend);
+            LogInfo::info($dataSend);
             $insert->qr_data = XenditServices::createQR($dataSend);
 
             // dd($insert->qr_data);
             Log::create(self::setParamLog($data,$insert));
-            Log::info('berhasil');
             DB::commit();
             return ['items' => $insert];
         } catch (\Throwable $th) {
