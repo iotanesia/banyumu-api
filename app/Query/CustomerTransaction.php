@@ -72,6 +72,7 @@ class CustomerTransaction {
 
             // dd($insert->qr_data);
             Log::create(self::setParamLog($data,$insert));
+            Log::info('berhasil');
             DB::commit();
             return ['items' => $insert];
         } catch (\Throwable $th) {
