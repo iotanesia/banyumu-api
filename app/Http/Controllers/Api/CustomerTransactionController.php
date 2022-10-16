@@ -53,6 +53,12 @@ class CustomerTransactionController extends Controller
             CustomerTransaction::waterFillingFinished($request)
         );
     }
+    public function prosesPengisianSelesaiV2(Request $request)
+    {
+        return ResponseInterface::resultResponseMesin(
+            CustomerTransaction::waterFillingFinishedV2($request)
+        );
+    }
     public function prosesPembatalanTransaksi(Request $request,$id)
     {
         return ResponseInterface::resultResponse(
@@ -69,6 +75,12 @@ class CustomerTransactionController extends Controller
     {
         return ResponseInterface::resultResponse(
             CustomerTransaction::callbackApi($request)
+        );
+    }
+    public function callbackApiV2(Request $request)
+    {
+        return ResponseInterface::resultResponse(
+            CustomerTransaction::callbackApiV2($request)
         );
     }
     public function qrTes(Request $request)

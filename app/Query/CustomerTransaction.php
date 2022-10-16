@@ -27,7 +27,7 @@ class CustomerTransaction {
         })->orderBy('created_at','desc')->paginate($request->limit);
         return [
             'items' => $data->getCollection()->transform(function ($item){
-                $item['mesin_code'] = $item->refMesin->mesin_code ?? null;
+                $item['device_id'] = $item->refMesin->device_id ?? null;
                 $item['mesin_name'] = $item->refMesin->username ?? null;
                 $item['mesin_id'] = $item->refMesin->id ?? null;
                 $item['transaction_code'] = $item->code ?? 'TRX-'.date('dmYHis',strToTime($item->created_at)).'00'.$item->id;
@@ -137,13 +137,17 @@ class CustomerTransaction {
             $update->fill($data);
             $update->save();
             Log::create(self::setParamLog($data,$update));
-            $notif['title'] = 'Pembayaran Berhasil';
-            $notif['body'] = 'Pembayaran Berhasil';
+            $notif['title'] = Constants::STS_PEMBAYARAN;
+            $notif['body'] = Constants::STS_PEMBAYARAN;
             Notif::sendNotifCallbacks($update->user_id,$notif,['status' => Constants::STS_PEMBAYARAN_FB]);
-            $mesin = User::whereNotNull('api_key')->find($update->user_id);
-            // if(!$mesin) throw new \Exception('Api Key belum terdaftar', 500);
-            MesinConnection::updateDebit($update->kapasitas);
-            MesinConnection::turnOn($mesin->api_key);
+            $mesin = User::find($update->user_id);
+            if(!$mesin) throw new \Exception('Mesin belum terdaftar', 500);
+            if($mesin->refMesin->username == 'sariater001') {
+                MesinConnection::updateDebit($update->kapasitas);
+                MesinConnection::turnOn($mesin->api_key);
+            } else {
+                MesinConnection::turnOnV2(self::paramSendMesin($mesin,$update));
+            }
             DB::commit();
             return ['items' => $update];
             // $data['action_by'] = $param->current_user->id;
@@ -165,6 +169,46 @@ class CustomerTransaction {
             DB::rollBack();
             throw $th;
         }
+    }
+
+    public static function callbackApiV2($param)
+    {
+        LogInfo::info('CALLBACK VIRTUAL ACCOUNT:');
+        LogInfo::info($param);
+
+        if($param->header('x-callback-token') != config('services.xendit.callback_secret_key')) throw new \Exception("Invalid Token.");
+        LogInfo::info('sukses callback');
+        DB::beginTransaction();
+        try {
+            $customerTransactionId = explode('-',$param->qr_code['external_id']);
+            $update = Model::find((int)$customerTransactionId[1]);
+            $data['action_by'] = $update->user_id;
+            $data['tahap'] = Constants::THP_PEMBAYARAN;
+            $data['status'] = Constants::STS_PEMBAYARAN;
+            $update->fill($data);
+            $update->save();
+            Log::create(self::setParamLog($data,$update));
+            $notif['title'] = Constants::STS_PEMBAYARAN;
+            $notif['body'] = Constants::STS_PEMBAYARAN;
+            Notif::sendNotifCallbacks($update->user_id,$notif,['status' => Constants::STS_PEMBAYARAN_FB]);
+            $mesin = User::whereNotNull('device_id')->find($update->user_id);
+            if(!$mesin) throw new \Exception('mesin code belum terdaftar', 500);
+            // MesinConnection::updateDebit($update->kapasitas);
+            MesinConnection::turnOnV2(self::paramSendMesin($mesin,$update));
+            DB::commit();
+            return ['items' => $update];
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            throw $th;
+        }
+    }
+
+    public static function paramSendMesin($mesin,$trx) {
+        return [
+            'device_id' => $mesin->device_id,
+            'water_ml' => $trx->kapasitas,
+            'transaction_id' => $trx->id
+        ];
     }
 
     public static function qrTes($param)
@@ -217,6 +261,36 @@ class CustomerTransaction {
             DB::commit();
             $notif['title'] = 'Pengisian Air Selesai';
             $notif['body'] = 'Pengisian Air Selesai '.'sariater001';
+            Notif::sendNotifSementara($param,$notif,['status' => Constants::STS_SELESAI_FB]);
+            return ['items' => $update];
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            throw $th;
+        }
+    }
+
+    public static function waterFillingFinishedV2($param)
+    {
+        DB::beginTransaction();
+        try {
+            $data = $param->all();
+            $required_params = [];
+            if (!$param->device_id) $required_params[] = 'device_id';
+            if (!$param->transaction_id) $required_params[] = 'transaction_id';
+            if (count($required_params)) throw new \Exception("Parameter berikut harus diisi: " . implode(", ", $required_params));
+            $mesin = User::where('device_id',$data['device_id'])->first();
+            if(!$mesin) throw new \Exception('mesin code belum terdaftar', 500);
+            $data['action_by'] = $mesin->id;
+            $data['tahap'] = Constants::THP_SELESAI;
+            $data['status'] = Constants::STS_SELESAI;
+            $update = Model::find($data['transaction_id']);
+            if(!$update) throw new \Exception('transaksi tidak ditemukan', 500);
+            $update->fill($data);
+            $update->save();
+            Log::create(self::setParamLog($data,$update));
+            DB::commit();
+            $notif['title'] = Constants::STS_AIR_SELESAI;
+            $notif['body'] = Constants::STS_AIR_SELESAI.' '.$mesin->username;
             Notif::sendNotifSementara($param,$notif,['status' => Constants::STS_SELESAI_FB]);
             return ['items' => $update];
         } catch (\Throwable $th) {
