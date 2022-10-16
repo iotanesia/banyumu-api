@@ -196,7 +196,7 @@ class CustomerTransaction {
             $mesin = User::whereNotNull('device_id')->find($update->user_id);
             if(!$mesin) throw new \Exception('mesin code belum terdaftar', 500);
             // MesinConnection::updateDebit($update->kapasitas);
-            MesinConnection::turnOnV2(self::paramSendMesin($mesin,$update));
+            MesinConnection::turnOnV2(['body' => self::paramSendMesin($mesin,$update)]);
             DB::commit();
             return ['items' => $update];
         } catch (\Throwable $th) {
