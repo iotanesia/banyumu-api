@@ -117,6 +117,7 @@ class CustomerTransaction {
 
     public static function callbackApi($param)
     {
+        // dd($param->qr_code);
         LogInfo::info('CALLBACK VIRTUAL ACCOUNT:');
         LogInfo::info($param);
         // $ext = 'ext-001';
@@ -148,7 +149,7 @@ class CustomerTransaction {
                 MesinConnection::updateDebit($update->kapasitas);
                 MesinConnection::turnOn($mesin->api_key);
             } else {
-                MesinConnection::turnOnV2(self::paramSendMesin($mesin,$update));
+                MesinConnection::turnOnV2(['body' => self::paramSendMesin($mesin,$update)]);
             }
             DB::commit();
             return ['items' => $update];
