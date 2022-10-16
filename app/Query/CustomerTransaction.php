@@ -142,7 +142,7 @@ class CustomerTransaction {
             Notif::sendNotifCallbacks($update->user_id,$notif,['status' => Constants::STS_PEMBAYARAN_FB]);
             $mesin = User::find($update->user_id);
             if(!$mesin) throw new \Exception('Mesin belum terdaftar', 500);
-            if($mesin->refMesin->username == 'sariater001') {
+            if($mesin->username == 'sariater001') {
                 MesinConnection::updateDebit($update->kapasitas);
                 MesinConnection::turnOn($mesin->api_key);
             } else {
