@@ -15,7 +15,8 @@ use Spatie\Health\Http\Controllers\HealthCheckResultsController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return phpinfo();
+    // return view('welcome');
 });
 
 Route::get('health', HealthCheckResultsController::class);
