@@ -76,6 +76,8 @@ class CustomerTransactionController extends Controller
     {
         // QrCode::format('png')->merge(url('/img/ic_icon_apps.png'), .3, true)->generate();
         QrCode::format('png')->size(300)->merge('/ic_icon_apps.png')->margin(1)->generate(base64_encode($request->code_trx), 'qrcode_file/'.$request->code_trx.'.png');
+
+        return url('qrcode_file/'.$request->code_trx.'.png');
         // return ResponseInterface::resultResponse(
         //     ['items' => ['img_qr'=>'BCA000201010211500201511027301632515204000053033605802ID5908WAN ADLI6003BCA62380216bXVufonIBXCLZPne991400303617092022630497d9']]
         // );
