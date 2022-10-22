@@ -11,6 +11,7 @@ use App\Notif;
 use App\Services\MesinConnection;
 use App\Services\XenditServices;
 use Illuminate\Support\Facades\DB;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class CustomerTransaction {
     public static function getAll($request)
@@ -105,6 +106,31 @@ class CustomerTransaction {
             Notif::sendNotif($param,$notif,['status' => Constants::STS_PEMBAYARAN_FB]);
             $mesin = User::whereNotNull('api_key')->find($param->current_user->mesin_id);
             // if(!$mesin) throw new \Exception('Api Key belum terdaftar', 500);
+            MesinConnection::updateDebit($update->kapasitas);
+            MesinConnection::turnOn($mesin->api_key);
+            DB::commit();
+            return ['items' => $update];
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            throw $th;
+        }
+    }
+
+    public static function qrPaymentProcess($param,$id)
+    {
+        DB::beginTransaction();
+        try {
+            $data = $param->all();
+            $data['action_by'] = $param->current_user->id;
+            $update = Model::where('code',base64_decode($param->code_trx))->where('status',Constants::STS_PEMBAYARAN)->where('tahap',Constants::THP_PEMBAYARAN)->first();
+            if(!$update) throw new \Exception('Invalid QR', 500);
+            $update->fill($data);
+            $update->save();
+            Log::create(self::setParamLog($data,$update));
+            $notif['title'] = 'Pembayaran Berhasil';
+            $notif['body'] = 'Pembayaran Berhasil '.$param->current_user->username;
+            Notif::sendNotif($param,$notif,['status' => Constants::STS_PEMBAYARAN_FB]);
+            $mesin = User::whereNotNull('api_key')->find($param->current_user->mesin_id);
             MesinConnection::updateDebit($update->kapasitas);
             MesinConnection::turnOn($mesin->api_key);
             DB::commit();

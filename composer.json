@@ -17,6 +17,7 @@
         "laravel/tinker": "^2.5",
         "phpseclib/phpseclib": "^3.0",
         "seffeng/laravel-rsa": "^1.0",
+        "simplesoftwareio/simple-qrcode": "~4",
         "spatie/laravel-health": "^1.9",
         "stevebauman/location": "^6.3",
         "xendit/xendit-php": "^2.18"
