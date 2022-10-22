@@ -55,6 +55,17 @@ class CustomerTransaction {
         return ['items' => $data];
     }
 
+    public static function detailByCode($code) {
+        $data = Model::where('code',base64_decode($code))->first();
+        $data->log = $data->manyLog->transform(function ($item){
+            $item['admin_name'] = $item->refActionBy->username ?? null;
+            unset($item->refActionBy);
+            return $item;
+        });
+        unset($data->manyLog);
+        return ['items' => $data];
+    }
+
     public static function reserveWater($param)
     {
         DB::beginTransaction();
@@ -116,23 +127,30 @@ class CustomerTransaction {
         }
     }
 
-    public static function qrPaymentProcess($param,$id)
+    public static function qrPaymentProcess($param,$code)
     {
         DB::beginTransaction();
         try {
             $data = $param->all();
             $data['action_by'] = $param->current_user->id;
-            $update = Model::where('code',base64_decode($param->code_trx))->where('status',Constants::STS_PEMBAYARAN)->where('tahap',Constants::THP_PEMBAYARAN)->first();
+            $update = Model::where('code',base64_decode($code))->where('status',Constants::STS_PEMBAYARAN)->where('tahap',Constants::THP_PEMBAYARAN)->first();
+            // dd($update);
             if(!$update) throw new \Exception('Invalid QR', 500);
             $update->fill($data);
             $update->save();
+            $data['tahap'] = Constants::THP_PEMBAYARAN;
+            $data['status'] = Constants::STS_PEMBAYARAN_QR;
             Log::create(self::setParamLog($data,$update));
             $notif['title'] = 'Pembayaran Berhasil';
             $notif['body'] = 'Pembayaran Berhasil '.$param->current_user->username;
             Notif::sendNotif($param,$notif,['status' => Constants::STS_PEMBAYARAN_FB]);
-            $mesin = User::whereNotNull('api_key')->find($param->current_user->mesin_id);
-            MesinConnection::updateDebit($update->kapasitas);
-            MesinConnection::turnOn($mesin->api_key);
+            $mesin = User::find($update->user_id);
+            if($param->current_user->username == 'sariater001') {
+                MesinConnection::updateDebit($update->kapasitas);
+                MesinConnection::turnOn($mesin->api_key);
+            } else {
+                MesinConnection::turnOnV2(['body' => self::paramSendMesin($mesin,$update)]);
+            }
             DB::commit();
             return ['items' => $update];
         } catch (\Throwable $th) {

@@ -24,6 +24,12 @@ class CustomerTransactionController extends Controller
             CustomerTransaction::detail($id)
         );
     }
+    public function detailQr(Request $request,$code)
+    {
+        return ResponseInterface::resultResponse(
+            CustomerTransaction::detailByCode($code)
+        );
+    }
     public function proses(Request $request)
     {
         return ResponseInterface::resultResponse(
@@ -36,10 +42,10 @@ class CustomerTransactionController extends Controller
             CustomerTransaction::adminPaymentProcess($request,$id)
         );
     }
-    public function prosesPembayaranQr(Request $request,$id)
+    public function prosesPembayaranQr(Request $request,$code)
     {
         return ResponseInterface::resultResponse(
-            CustomerTransaction::qrPaymentProcess($request,$id)
+            CustomerTransaction::qrPaymentProcess($request,$code)
         );
     }
     public function prosesPengisianAir(Request $request,$id)
