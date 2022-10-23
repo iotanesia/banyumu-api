@@ -44,6 +44,10 @@ class User extends Authenticatable
     ];
 
     public function refMesin(){
-        return $this->belongsTo(User::class,'id_mesin','id');
+        return $this->belongsTo(User::class,'mesin_id','id');
+    }
+
+    public function refMstKalibrasi(){
+        return $this->belongsTo(MstKalibrasi::class,'user_id','id');
     }
 }

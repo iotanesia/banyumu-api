@@ -254,6 +254,7 @@ class CustomerTransaction {
         return [
             'device_id' => $mesin->device_id,
             'water_ml' => $trx->kapasitas,
+            'time' => $trx->kapasitas * $mesin->refMstKalibrasi->nilai,
             'transaction_id' => $trx->id
         ];
     }
@@ -338,7 +339,8 @@ class CustomerTransaction {
             DB::commit();
             $notif['title'] = Constants::STS_AIR_SELESAI;
             $notif['body'] = Constants::STS_AIR_SELESAI.' '.$mesin->username;
-            Notif::sendNotifSementara($param,$notif,['status' => Constants::STS_SELESAI_FB]);
+            // Notif::sendNotifCallbacks($mesin->id,$param,$notif,['status' => Constants::STS_SELESAI_FB]);
+            Notif::sendNotifCallbacks($mesin->id,$notif,['status' => Constants::STS_SELESAI_FB]);
             return ['items' => $update];
         } catch (\Throwable $th) {
             DB::rollBack();
