@@ -142,7 +142,7 @@ class CustomerTransaction {
             Log::create(self::setParamLog($data,$update));
             $notif['title'] = 'Pembayaran Berhasil';
             $notif['body'] = 'Pembayaran Berhasil '.$param->current_user->username;
-            Notif::sendNotif($param,$notif,['status' => Constants::STS_PEMBAYARAN_FB]);
+            Notif::sendNotifCallbacks($param->current_user->id,$notif,['status' => Constants::STS_PEMBAYARAN_FB]);
             $mesin = User::find($update->user_id);
             // dd($mesin,$mesin->refMstKalibrasi);
             if($param->current_user->username == 'sariater001') {
