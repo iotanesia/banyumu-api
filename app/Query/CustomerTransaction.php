@@ -144,7 +144,7 @@ class CustomerTransaction {
             $notif['body'] = 'Pembayaran Berhasil '.$param->current_user->username;
             Notif::sendNotif($param,$notif,['status' => Constants::STS_PEMBAYARAN_FB]);
             $mesin = User::find($update->user_id);
-            dd($mesin,$mesin->refMstKalibrasi);
+            // dd($mesin,$mesin->refMstKalibrasi);
             if($param->current_user->username == 'sariater001') {
                 MesinConnection::updateDebit($update->kapasitas);
                 MesinConnection::turnOn($mesin->api_key);
