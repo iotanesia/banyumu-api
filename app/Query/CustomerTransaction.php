@@ -134,7 +134,6 @@ class CustomerTransaction {
             $data = $param->all();
             $data['action_by'] = $param->current_user->id;
             $update = Model::where('code',base64_decode($code))->where('status',Constants::STS_PEMBAYARAN)->where('tahap',Constants::THP_PEMBAYARAN)->first();
-            // dd($update);
             if(!$update) throw new \Exception('Invalid QR', 500);
             $update->fill($data);
             $update->save();
@@ -145,6 +144,7 @@ class CustomerTransaction {
             $notif['body'] = 'Pembayaran Berhasil '.$param->current_user->username;
             Notif::sendNotif($param,$notif,['status' => Constants::STS_PEMBAYARAN_FB]);
             $mesin = User::find($update->user_id);
+            dd($mesin,$mesin->refMstKalibrasi);
             if($param->current_user->username == 'sariater001') {
                 MesinConnection::updateDebit($update->kapasitas);
                 MesinConnection::turnOn($mesin->api_key);

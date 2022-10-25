@@ -48,6 +48,6 @@ class User extends Authenticatable
     }
 
     public function refMstKalibrasi(){
-        return $this->belongsTo(MstKalibrasi::class,'user_id','id');
+        return $this->belongsTo(MstKalibrasi::class,'id','user_id');
     }
 }
