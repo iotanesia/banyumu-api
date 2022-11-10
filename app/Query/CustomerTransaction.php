@@ -254,7 +254,7 @@ class CustomerTransaction {
         return [
             'device_id' => $mesin->device_id,
             'water_ml' => $trx->kapasitas,
-            'time' => $trx->kapasitas * $mesin->refMstKalibrasi->nilai,
+            'time' => MstKalibrasi::getTime($mesin,$trx->kapasitas),
             'transaction_id' => $trx->id
         ];
     }
