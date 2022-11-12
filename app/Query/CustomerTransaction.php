@@ -115,7 +115,7 @@ class CustomerTransaction {
             $notif['title'] = 'Pembayaran Berhasil';
             $notif['body'] = 'Pembayaran Berhasil '.$param->current_user->username;
             Notif::sendNotif($param,$notif,['status' => Constants::STS_PEMBAYARAN_FB]);
-            $mesin = User::whereNotNull('api_key')->find($param->current_user->mesin_id);
+            $mesin = User::find($param->current_user->mesin_id);
             // if(!$mesin) throw new \Exception('Api Key belum terdaftar', 500);
             if($mesin->username == 'sariater001') {
                 MesinConnection::updateDebit($update->kapasitas);
