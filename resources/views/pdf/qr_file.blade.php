@@ -51,6 +51,7 @@
         @foreach($data as $val)
         <img class="img-qr" src="{{url('/')}}/qrcode_trx_file/{{$val['code']}}" alt="">
         <span>{{$val['code']}}</span>
+        <span>{{url('/')}}/qrcode_trx_file/{{$val['code']}}</span>
         @endforeach
     </table>
 </body>
