@@ -48,11 +48,21 @@
 
 <body>
     <table>
-        @foreach($data as $val)
-        <img class="img-qr" src="{{url('/')}}/qrcode_trx_file/{{$val['code']}}.png" alt="">
-        <span>{{$val['code']}}</span>
-        <span>{{url('/')}}/qrcode_trx_file/{{$val['code']}}</span>
-        @endforeach
+        <div class="grid-container">
+            <table>
+                @php $counter = 0; @endphp
+                @for($j=0;$j < $rowData;$j++)
+                <tr>
+                    @for($i=0;$i < $colData; $i++)
+                    @if(isset($data[$counter]))
+                    <th><img class="img-qr" style="width:150px" src="{{url('/')}}/qrcode_trx_file/{{$data[$counter]['code']}}.png" alt=""><br><p style="font-size:11pt">{{$data[$counter]['code']}}</p></th>
+                    @php $counter++ @endphp
+                    @endif
+                    @endfor
+                </tr>
+                @endfor
+            </table>
+        </div>
     </table>
 </body>
 </html>
