@@ -15,6 +15,8 @@ class CustomerTransaction extends Model
         'harga',
         'tahap',
         'status',
+        'flag_stiker',
+        'code',
         'created_at',
         'updated_at'
     ];
@@ -31,7 +33,9 @@ class CustomerTransaction extends Model
         {
             $lastCodeId = CustomerTransaction::max('id');
             $code = str_repeat("0", 4 - strlen($lastCodeId)).($lastCodeId + 1);
-            $model->code = 'TRX-'.date('YmdHis').$code;
+            if(!$model->flag_stiker) {
+                $model->code = 'TRX-'.date('YmdHis').$code;
+            }
         });
 
         parent::boot();

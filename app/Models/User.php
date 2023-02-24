@@ -50,4 +50,8 @@ class User extends Authenticatable
     public function refMstKalibrasi(){
         return $this->belongsTo(MstKalibrasi::class,'id','user_id');
     }
+
+    public function refMstHarga(){
+        return $this->belongsTo(MstHarga::class,'location_id','location_id');
+    }
 }

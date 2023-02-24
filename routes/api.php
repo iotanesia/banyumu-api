@@ -36,6 +36,7 @@ Route::prefix('v1')
     Route::get('img-qr',[CustomerTransactionController::class,'imgQr']);
     Route::post('callback-api',[CustomerTransactionController::class,'callbackApi']);
     Route::post('qr-tes',[CustomerTransactionController::class,'qrTes']);
+    Route::post('asd',[CustomerTransactionController::class,'pdfimgQr']);
 
     
     Route::group(['middleware' => 'access'],function () {

@@ -394,4 +394,8 @@ class CustomerTransaction {
             throw $th;
         }
     }
+
+    public static function pdfQr() {
+        return Model::where('status',Constants::STS_PEMBAYARAN)->where('flag_stiker',1)->get();
+    }
 }
