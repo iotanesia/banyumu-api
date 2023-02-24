@@ -104,7 +104,7 @@ class CustomerTransactionController extends Controller
                 $trx = [
                     'user_id' => $request->user_id,
                     'kapasitas' => $request->kapasitas,
-                    'harga' => $request->kapasitas * $user->refMstHarga->harga,
+                    'harga' => ($request->kapasitas / $user->refMstHarga->kapasitas) * $user->refMstHarga->harga,
                     'tahap' => Constants::THP_PEMBAYARAN,
                     'status' => Constants::STS_PEMBAYARAN,
                     'flag_stiker' => 1,
