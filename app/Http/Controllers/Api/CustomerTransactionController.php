@@ -117,7 +117,7 @@ class CustomerTransactionController extends Controller
 
         $data = CustomerTransaction::pdfQr();
         // QrCode::format('png')->size(300)->merge('/ic_icon_apps.jpeg')->margin(1)->generate(base64_encode($request->code_trx), 'qrcode_file/'.$request->code_trx.'.png');
-        $filename = 'trx.pdf';
+        $filename = 'trx2.pdf';
         $pathToFile = storage_path().'/app/public/qr_file/'.$filename;
         PDF::loadView('pdf.qr_file',[
             'data' => $data,
