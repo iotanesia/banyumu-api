@@ -55,7 +55,7 @@
                 <tr>
                     @for($i=0;$i < $colData; $i++)
                     @if(isset($data[$counter]))
-                    <th><img class="img-qr" style="width:150px" src="{{url('/')}}/qrcode_trx_file/{{$data[$counter]['code']}}.png" alt=""><br><p style="font-size:11pt">{{$data[$counter]['code']}}</p></th>
+                    <th style="border:solid 1px"><img class="img-qr" style="width:150px" src="{{url('/')}}/qrcode_trx_file/{{$data[$counter]['code']}}.png" alt=""><br><p style="font-size:11pt">{{$data[$counter]['code']}}</p></th>
                     @php $counter++ @endphp
                     @endif
                     @endfor
