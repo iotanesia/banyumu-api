@@ -49,7 +49,7 @@
 <body>
     <table>
         @foreach($data as $val)
-        <img class="img-qr" src="{{url('/')}}/public/qrcode_file/{{$val['code']}}" alt="">
+        <img class="img-qr" src="{{url('/')}}/qrcode_file/{{$val['code']}}" alt="">
         <span>{{$val['code']}}</span>
         @endforeach
     </table>
