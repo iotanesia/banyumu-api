@@ -43,9 +43,9 @@ return [
         'callback_secret_key' => env('CALLBACK_XENDIT_KEY','2f694544b3ebcd2eba1d39b00742e94192ba77da958b24e82092f8c53f5fbc4f')
     ],
     'banyumu' => [
-        'userId' => env('USERID_BANYUMU','banyumu'),
-        'password' => env('PASSWORD_BANYUMU','banyumu321'),
-        'host' => env('LOCALHOST','127.0.0.1:3000')
+        'userId' => env('USERID_BANYUMU','admin'),
+        'password' => env('PASSWORD_BANYUMU','admin@3A9rWA9N8Jp'),
+        'host' => env('LOCALHOST','http://172.105.127.180:3000')
     ]
 
 ];
